@@ -11,6 +11,12 @@ Player::~Player()
 {
 
 }
+void Player::initPlayer()
+{
+    m_win = 0;
+    m_lose = 0;
+    m_draw = 0;
+}
 void Player::setName(string name)
 {
     m_name = name;

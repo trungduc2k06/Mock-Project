@@ -13,6 +13,7 @@ class Player
     public:
         Player();
         ~Player();
+		void initPlayer();
 		void setName(string);
         string getName();
 		void setWin(int);
