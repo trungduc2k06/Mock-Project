@@ -30,7 +30,7 @@ Board::~Board()
     for(int i = 0; i < m_size; i++) delete[] m_arr[i];
     delete[] m_arr;
 }
-int Board::setSize(int size)
+void Board::setSize(int size)
 {
     m_size = size;
 }
@@ -119,38 +119,6 @@ void Board::drawBoard()
         }
         cout << endl;
     }
-}
-bool Board::checkFullBoard()
-{
-    int count = 0;
-    for(int x = 0; x <= getSize() - 1; x++)
-    {
-        for(int y = 0; y <= getSize() - 1; y++)
-        {
-            if(getXO(x, y) == 0)
-            {
-                count++;
-            }
-        }
-    }
-    if(count == 0) return true;
-    return false;
-}
-bool Board::horiWin(int x, int y)
-{
-    
-}
-bool Board::vertiWin(int, int)
-{
-
-}
-bool Board::lCrossWin(int, int)
-{
-
-}
-bool Board::rCrossWin(int, int)
-{
-
 }
 void Board::setXO(int i, int j, int value)
 {

@@ -1,8 +1,10 @@
 #include "Board.h"
+#include "View.h"
 
 int main()
 {
-    Board board;
-    board.drawBoard();
+    Game* game = new Game(BOARD_SIZE);
+    View view;
+    view.startGame();
     return 0;
 }

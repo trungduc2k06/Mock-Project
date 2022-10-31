@@ -13,13 +13,12 @@ class Board
         Board();
         Board(int);
         ~Board();
-        int setSize(int);
+        void setSize(int);
         int getSize();
         int getXAt(int, int);
         int getYAt(int, int);
         void resetBoard();
         void drawBoard();
-        bool checkFullBoard();
         void setXO(int, int ,int);
         int getXO(int, int);
 };

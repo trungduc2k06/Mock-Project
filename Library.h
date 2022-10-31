@@ -28,6 +28,15 @@ using namespace std;
 #define LIGHT_RED 12
 #define LIGHT_MAGENTA 13
 #define YELLOW 14
+//View
+enum choiceType
+{
+    t_play = '1',
+    t_replay,
+    t_info,
+    t_guide,
+    t_exit,
+};
 //
 void setColor(int color);
 void showInput(string s);

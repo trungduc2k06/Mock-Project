@@ -1,5 +1,12 @@
 #include "Game.h"
 
+Game::Game()
+{
+    m_exit = false;
+    m_turn = true;
+    m_wongame = false;
+    m_playerwon = 0;
+}
 Game::Game(int size)
 {
     m_board = new Board(size);

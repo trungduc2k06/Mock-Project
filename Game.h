@@ -15,6 +15,7 @@ class Game
         bool m_wongame;//kiem tra game da co nguoi thang chua
         int m_playerwon;//Luu nguoi thang game
     public:
+		Game();
         Game(int);
         ~Game();
         void initGame(int);
