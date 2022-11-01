@@ -91,3 +91,19 @@ int Game::getPlayerWon()
 {
     return m_playerwon;
 }
+void Game::saveMove(int col, int row, int value)
+{
+    Move move;
+    move.col = col;
+    move.row = row;
+    move.value = value;
+    replayMoves.push_back(move);
+}
+list<Move> Game::getReplayMoves()
+{
+    return replayMoves;
+}
+void Game::resetReplayMoves()
+{
+    replayMoves.clear();
+}

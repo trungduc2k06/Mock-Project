@@ -3,7 +3,8 @@
 
 #include "Board.h"
 #include "Player.h"
-
+#include "Library.h"
+#include <list>
 class Game
 {
     private:
@@ -14,6 +15,7 @@ class Game
         bool m_exit; //quyet dinh thoat game hay khong
         bool m_wongame;//kiem tra game da co nguoi thang chua
         int m_playerwon;//Luu nguoi thang game
+		list<Move> replayMoves;
     public:
 		Game();
         Game(int);
@@ -32,6 +34,9 @@ class Game
 		void setWonGame(bool);
 		void setPlayerWon(int);
 		int getPlayerWon();
+		void saveMove(int, int, int);
+		list<Move> getReplayMoves();
+		void resetReplayMoves();
 };
 
 #endif

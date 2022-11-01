@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "View.h"
 #include "Validation.h"
+#include "FileFunction.h"
 
 class Controller
 {
@@ -30,6 +31,8 @@ class Controller
         void checkWinGame();
         void updateWinLoseRecord();
         void updateDrawRecord();
+        void replayLastGame();
+		void replayGameById(char);
         void playerInputAccount();
         void playerChooseAccount();
         void playerInputMove();
@@ -40,6 +43,8 @@ class Controller
         void mainMenu();
         void playWithOtherPlayer();
         void gameOverMenu();
+        void askToSaveReplay();
+		void replay();
         void playerInformationMenu();
 		void showAllPlayer();
 		void searchPlayerByName();

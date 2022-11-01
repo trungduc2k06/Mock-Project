@@ -29,6 +29,11 @@ using namespace std;
 #define LIGHT_RED 12
 #define LIGHT_MAGENTA 13
 #define YELLOW 14
+//
+struct Move
+{
+    int col, row, value;
+};
 //View
 enum choiceType
 {

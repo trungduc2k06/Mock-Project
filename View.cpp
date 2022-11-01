@@ -124,6 +124,20 @@ void View::gameOverMenu()
     showInput("2.Back to MAIN MENU\n", RED);
     showInput("Press number to choice: ");
 }
+void View::askToSaveReplay()
+{
+    showInput("Do you want to save replay?\n", YELLOW);
+    showInput("1.Yes\n", RED);
+    showInput("2.No\n", RED);
+    showInput("Press number to choice:");
+}
+void View::replay()
+{
+    showInput("1.Replay again\n", RED);
+    showInput("2.Choose another replay\n", RED);
+    showInput("3.Back to MAIN MENU\n", RED);
+    showInput("Press number to choice:");   
+}
 void View::playerInformationMenu()
 {
     showInput("1.Show All Player\n", RED);
@@ -133,11 +147,16 @@ void View::playerInformationMenu()
 }
 void View::showAllPlayer()
 {
-
+    showInput("1.Back to Player's Infomation\n", RED);
+    showInput("2.Back to MAIN MENU\n", RED);
+    showInput("Press number to choice:");
 }
 void View::searchPlayerByName()
 {
-
+    showInput("1.Continue search\n", RED);
+    showInput("2.Back to Player's Infomation\n", RED);
+    showInput("3.Back to MAIN MENU\n", RED);
+    showInput("Press number to choice:");
 }
 void View::guide()
 {

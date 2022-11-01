@@ -13,6 +13,8 @@ class View
 		void menuHeader(char);
         void mainMenu();
 		void gameOverMenu();
+		void askToSaveReplay();
+		void replay();
 		void playerInformationMenu();
 		void showAllPlayer();
 		void searchPlayerByName();

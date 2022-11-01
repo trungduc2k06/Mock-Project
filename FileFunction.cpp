@@ -14,7 +14,7 @@ void createRecordFile()
 {
     ofstream fout;
     fout.open(recordFile, ios::out | ios::app);
-    fout << "  Name    Win    Lose    Draw\n";
+    fout << "    Name    Win    Lose    Draw\n";
     fout.close();
 }
 void writePlayerInFile(Player player)
@@ -70,7 +70,7 @@ bool checkPlayerName(string name)
     fin.close();
     return false;
 }
-void searchPlayerByName(string name)
+void searchPlayerRecordByName(string name)
 {
     if(!isFileExist(recordFile))
     {
@@ -88,10 +88,10 @@ void searchPlayerByName(string name)
         if(namePlayer == name)
         {
             showInput("Player's Infomation\n", YELLOW);
-            showInput("Name: " + namePlayer + '\n');
-            showInput("Num of win: " + numWin + '\n');
-            showInput("Num of lose: " + numLose + '\n');
-            showInput("Num of draw: " + numDraw + '\n');
+            cout << "Name: " << namePlayer << endl;
+            cout << "Num of win: " << numWin << endl;
+            cout << "Num of lose: " << numLose << endl;
+            cout << "Num of draw: " << numDraw << endl;
             findPlayerSameRank(name, numWin, numLose);
             return;
         }
@@ -118,11 +118,11 @@ void findPlayerSameRank(string name, int win, int lose)
         if((namePlayer != name) && (numWin == win) && (numLose - lose >= -1) && (numLose - lose <= 1))
         {
             if(tmp == namePlayer) return;
-            showInput("Player same rank!\n", YELLOW;
-            showInput("Name: " + namePlayer + '\n');
-            showInput("Num of win: " + numWin + '\n');
-            showInput("Num of lose: " + numLose + '\n');
-            showInput("Num of draw: " + numDraw + '\n');
+            showInput("Player same rank!\n", YELLOW);
+            cout << "Name: " << namePlayer << endl;
+            cout << "Num of win: " << numWin << endl;
+            cout << "Num of lose: " << numLose << endl;
+            cout << "Num of draw: " << numDraw << endl;
             tmp =  namePlayer;
         }
     }
@@ -175,4 +175,153 @@ void updateCurentResultPlayer(Player& player)
         }
     }
     fin.close();
+}
+//Replay
+void createReplayFile()
+{
+    ofstream fout;
+    fout.open(replayFile, ios::out | ios::app);
+    fout << "      id    Player1    Player2\n";
+    fout.close();
+}
+bool checkGameId(char id)
+{
+    if(!isFileExist(replayFile))
+    {
+        createReplayFile();
+    }
+    ifstream fin;
+    fin.open(replayFile);
+    char idGame;
+    string infoInline;
+    while (!fin.eof())
+    {
+        getline(fin, infoInline);
+        fin >> idGame;
+        if(idGame == id)
+        {
+            return true;
+        }
+    }
+    fin.close();
+    return false;
+}
+void saveReplayInFile(Game* game)
+{
+    if(!isFileExist(replayFile))
+    {
+        createReplayFile();
+    }
+    char id = '0';
+    char tmp[] = "         ";
+    string line;
+    int count = 0;
+    ofstream fout;
+    fout.open(replayFile, ios::out | ios::app);
+    while (checkGameId(id) == true)
+    {
+        id++;
+    }
+    fout << setw(8) << id;
+    fout << setw(12) << game->getPlayer1().getName();
+    fout << setw(12) << game->getPlayer2().getName();
+    fout << '\n';
+    list<Move>::iterator iter;
+    Game* replayGame = new Game(game->getBoard()->getSize());
+    list<Move> replayMoves = game->getReplayMoves();
+    iter = replayMoves.begin();
+    while (iter != replayMoves.end())
+    {
+        fout << setw(8) << '-' << tmp << (*iter).col << ' ' << (*iter).row << ' ' << (*iter).value << endl;
+        iter++;
+    }
+    fout.close();
+}
+void showAllReplayGameInFile()
+{
+    if(!isFileExist(replayFile))
+    {
+        createReplayFile();
+    }
+    ifstream fin;
+    fin.open(replayFile);
+    string line;
+    while (getline(fin, line))
+    {
+        if(line.substr(8 - sizeof(char), sizeof(char)) != "-")
+        {
+            cout << line << endl;
+        }
+    }
+    
+}
+list<Move> getReplayMoveById(char id)
+{
+    list<Move> replayMoves;
+    int col, row, value;
+    string infoInline;
+    char idGame;
+    if(!isFileExist(replayFile))
+    {
+        createReplayFile();
+    }
+    ifstream fin;
+    fin.open(replayFile);
+    while (!fin.eof())
+    {
+        getline(fin, infoInline);
+        fin >> idGame;
+        if(idGame == id && idGame != '-')
+        {
+            do
+            {
+                getline(fin, infoInline);
+                fin >> idGame >> col >> row >> value;
+                if(idGame == '-')
+                {
+                    Move move;
+                    move.col = col;
+                    move.row = row;
+                    move.value = value;
+                    replayMoves.push_back(move);
+                }
+            } while (idGame == '-' && fin.eof());
+            return replayMoves;
+        } 
+    }
+    fin.close();
+    cout << "Don't find any game id: " << id << endl;
+    return replayMoves;
+}
+string getReplayPlayerById(char id, int user)
+{
+    string user1, user2;
+    char idGame;
+    string infoInline;
+    if(!isFileExist(replayFile))
+    {
+        createReplayFile();
+    }
+    ifstream fin;
+    fin.open(replayFile);
+    while(!fin.eof())
+    {
+        getline(fin, infoInline);
+        fin >> idGame >> user1 >> user2;
+        if(idGame == id)
+        {
+            if(user == 1)
+            {
+                return user1;
+            }
+            else if(user == 2)
+            {
+                return user2;
+            }
+            else
+                return "";
+        }
+    }
+    fin.close();
+    return "";
 }
