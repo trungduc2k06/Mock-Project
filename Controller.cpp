@@ -1,30 +1,58 @@
 #include "Controller.h"
 
-void Controller::inputOption()
+Controller::Controller(Game* game, View* view)
 {
-    char op;
-    cin >> op;  
-    if(op >= '0' && op <= '9')
+    m_game = game;
+    m_view = view;
+}
+Controller::~Controller()
+{
+    delete m_game;
+    delete m_view;
+}
+
+char Controller::inputOption()
+{
+    char key;
+    cin >> key;  
+    return key;
+}
+
+//Controller
+void Controller::initGame(int size)
+{
+    m_game->initGame(size);
+}
+bool Controller::isContinue()
+{
+    return !m_game->getExit();
+}
+void Controller::exitGame()
+{
+    system("cls");
+    m_game->setExit(true);
+    exit(0);
+}
+
+void Controller::resetBoard()
+{
+    //if(m_game->getBoard()->getSize() == 0) return false;
+    for(int i = 0; i < m_game->getBoard()->getSize(); i++)
     {
-        m_option = op;
+        for(int j = 0; j < m_game->getBoard()->getSize(); j++)
+        {
+            m_game->getBoard()->setXO(i, j, 0);
+        }
     }
-}
-void Controller::setOption(char op)
-{
-    m_option = op;
-}
-char Controller::getOption()
-{
-    return m_option;
 }
 bool Controller::checkFullBoard()
 {
     int count = 0;
-    for(int x = 0; x <= m_board.getSize() - 1; x++)
+    for(int x = 0; x <= m_game->getBoard()->getSize() - 1; x++)
     {
-        for(int y = 0; y <= m_board.getSize() - 1; y++)
+        for(int y = 0; y <=m_game->getBoard()->getSize() - 1; y++)
         {
-            if(m_board.getXO(x, y) == 0)
+            if(m_game->getBoard()->getXO(x, y) == 0)
             {
                 count++;
             }
@@ -35,30 +63,30 @@ bool Controller::checkFullBoard()
 }
 bool Controller::horiWin(int x, int y)
 {
-    if(m_board.getXO(x, y) == 0) return false;
-    int player1 = m_board.getXO(x, y);
+    if(m_game->getBoard()->getXO(x, y) == 0) return false;
+    int player1 = m_game->getBoard()->getXO(x, y);
     int count = 0;
     int opcount = 0;
     for(int i = x; i >= 0; i--)
     {
-        if(m_board.getXO(i, y) == player1)
+        if(m_game->getBoard()->getXO(i, y) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(i,y) != 0)
+        else if(m_game->getBoard()->getXO(i,y) != 0)
         {
             opcount++;
             break;
         }
         else break;
     }
-    for(int i = x + 1; i <= m_board.getSize() - 1; i++)
+    for(int i = x + 1; i <= m_game->getBoard()->getSize() - 1; i++)
     {
-        if(m_board.getXO(i, y) == player1)
+        if(m_game->getBoard()->getXO(i, y) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(i, y) != 0)
+        else if(m_game->getBoard()->getXO(i, y) != 0)
         {
             opcount++;
             break;
@@ -71,30 +99,30 @@ bool Controller::horiWin(int x, int y)
 }
 bool Controller::vertiWin(int x, int y)
 {
-    if(m_board.getXO(x, y) == 0) return false;
-    int player1 = m_board.getXO(x, y);
+    if(m_game->getBoard()->getXO(x, y) == 0) return false;
+    int player1 = m_game->getBoard()->getXO(x, y);
     int count = 0;
     int opcount = 0;
     for(int i = y; i >= 0; i--)
     {
-        if(m_board.getXO(x, i) == player1)
+        if(m_game->getBoard()->getXO(x, i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x, i) != 0)
+        else if(m_game->getBoard()->getXO(x, i) != 0)
         {
             opcount++;
             break;
         }
         else break;
     }
-    for(int i = y + 1; i <= m_board.getSize() - 1; i++)
+    for(int i = y + 1; i <= m_game->getBoard()->getSize() - 1; i++)
     {
-        if(m_board.getXO(x, i) == player1)
+        if(m_game->getBoard()->getXO(x, i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x, i) != 0)
+        else if(m_game->getBoard()->getXO(x, i) != 0)
         {
             opcount++;
             break;
@@ -107,32 +135,32 @@ bool Controller::vertiWin(int x, int y)
 }
 bool Controller::lCrossWin(int x, int y)
 {
-    if(m_board.getXO(x, y) == 0) return false;
-    int player1 = m_board.getXO(x, y);
+    if(m_game->getBoard()->getXO(x, y) == 0) return false;
+    int player1 = m_game->getBoard()->getXO(x, y);
     int count = 0;
     int opcount = 0;
     int m = min(x, y);
     for(int i = 0; i <= m; i++)
     {
-        if(m_board.getXO(x - i, y - i) == player1)
+        if(m_game->getBoard()->getXO(x - i, y - i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x - i, y - i) != 0)
+        else if(m_game->getBoard()->getXO(x - i, y - i) != 0)
         {
             opcount++;
             break;
         }
         else break;
     }
-    m = min(m_board.getSize() - x, m_board.getSize() - y);
+    m = min(m_game->getBoard()->getSize() - x, m_game->getBoard()->getSize() - y);
     for(int i = 1; i <= m; i++)
     {
-        if(m_board.getXO(x + i, y + i) == player1)
+        if(m_game->getBoard()->getXO(x + i, y + i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x +i, y + i) != 0)
+        else if(m_game->getBoard()->getXO(x +i, y + i) != 0)
         {
             opcount++;
             break;
@@ -145,32 +173,32 @@ bool Controller::lCrossWin(int x, int y)
 }
 bool Controller::rCrossWin(int x, int y)
 {
-    if(m_board.getXO(x, y) == 0) return false;
-    int player1 = m_board.getXO(x, y);
+    if(m_game->getBoard()->getXO(x, y) == 0) return false;
+    int player1 = m_game->getBoard()->getXO(x, y);
     int count = 0;
     int opcount = 0;
-    int m = min(x, m_board.getSize() - y);
+    int m = min(x, m_game->getBoard()->getSize() - y);
     for(int i = 0; i <= m; i++)
     {
-        if(m_board.getXO(x - i, y + i) == player1)
+        if(m_game->getBoard()->getXO(x - i, y + i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x - i, y + i) != 0)
+        else if(m_game->getBoard()->getXO(x - i, y + i) != 0)
         {
             opcount++;
             break;
         }
         else break;
     }
-    m = min(m_board.getSize() - x, y);
+    m = min(m_game->getBoard()->getSize() - x, y);
     for(int i = 1; i <= m; i++)
     {
-        if(m_board.getXO(x + i, y - i) == player1)
+        if(m_game->getBoard()->getXO(x + i, y - i) == player1)
         {
             count++;
         }
-        else if(m_board.getXO(x + i, y - i) != 0)
+        else if(m_game->getBoard()->getXO(x + i, y - i) != 0)
         {
             opcount++;
             break;
@@ -179,68 +207,255 @@ bool Controller::rCrossWin(int x, int y)
     }
     if(opcount >= 2) return false;
     if(count >= 4) return true;
-    return true;
+    return false;
 }
 void Controller::checkWinGame()
 {
-    for(int x = 0; x <= m_board.getSize() - 1; x++)
+    for(int x = 0; x <= m_game->getBoard()->getSize() - 1; x++)
     {
-        for (int y = 0; y < m_board.getSize() - 1; y++)
+        for (int y = 0; y < m_game->getBoard()->getSize() - 1; y++)
         {
             if(horiWin(x, y) || vertiWin(x, y) || lCrossWin(x, y) || rCrossWin(x, y))
             {
-                m_game.setWonGame(true);
-                m_game.setPlayerWon(m_board.getXO(x,y));
-                if(m_game.isWonGame() == true) break;
+                m_game->setWonGame(true);
+                m_game->setPlayerWon(m_game->getBoard()->getXO(x,y));
+                if(m_game->isWonGame() == true) break;
             }
         }
-        if(m_game.isWonGame() == true) break;
+        if(m_game->isWonGame() == true) break;
     }
 }
 void Controller::updateWinLoseRecord()
 {
-    Player player1 = m_game.getPlayer1();
-    Player player2 = m_game.getPlayer2();
-    if(m_game.getPlayerWon() == VX)
+    if(m_game->getPlayerWon() == VX)
     {
-        player1.increWin();
-        player2.increLose();
+        m_game->getPlayer1().increWin();
+        m_game->getPlayer2().increLose();
     }
-    else if(m_game.getPlayerWon() == VO)
+    else if(m_game->getPlayerWon() == VO)
     {
-        player1.increLose();
-        player2.increWin();
+        m_game->getPlayer1().increLose();
+        m_game->getPlayer2().increWin();
     }
 }
 void Controller::updateDrawRecord()
 {
-    Player player1 = m_game.getPlayer1();
-    Player player2 = m_game.getPlayer2();
-    player1.increDraw();
-    player2.increDraw();
+    m_game->getPlayer1().increDraw();
+    m_game->getPlayer2().increDraw();
+}
+void Controller::playerInputAccount()
+{
+    showInput("Input player 1: ");
+    m_game->getPlayer1().initPlayer();
+    while (!checkName(m_game->getPlayer1().getName()))
+    {
+        showInput("Input player 1: ");
+        m_game->getPlayer1().initPlayer();
+    }
+    showInput("Input player 2: ");
+    m_game->getPlayer2().initPlayer();
+    while (!checkName(m_game->getPlayer2().getName()))
+    {
+        showInput("Input player 2: ");
+        m_game->getPlayer2().initPlayer();
+    }
+    while (m_game->getPlayer2().getName() == m_game->getPlayer1().getName())
+    {
+        showInput("Same name as player 1\n", RED);
+        showInput("Input player 2: ");
+        m_game->getPlayer2().initPlayer();
+    }    
+}
+void Controller::playerChooseAccount()
+{
+
+}
+void Controller::playerInputMove()
+{
+    char chCol, chRow;
+    int inputCol, inputRow;
+    if(m_game->getTurn() == true)
+    {
+        showInput("Player ");
+        showInput(m_game->getPlayer1().getName() + "'s ", P1);
+        showInput("turn: ");
+        do
+        {
+            cin >> chRow;
+            cin >> chCol;
+            inputRow = (int)chRow - 48;
+            inputCol = (int)chCol - 48;
+        } while ((inputCol < 0) || (inputCol > m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow > m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
+        m_game->getBoard()->setXO(inputCol, inputRow, VX);
+    }
+    if(m_game->getTurn() == false)
+    {
+        showInput("Player ");
+        showInput(m_game->getPlayer2().getName() + "'s ", P2);
+        showInput("turn: ");
+        do
+        {
+            cin >> chRow;
+            cin >> chCol;
+            inputRow = (int)chRow - 48;
+            inputCol = (int)chCol - 48;
+        } while ((inputCol < 0) || (inputCol > m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow > m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
+        m_game->getBoard()->setXO(inputCol, inputRow, VO);
+    }
 }
 void Controller::changePlayer()
 {
-    if(m_game.getTurn() == true)
+    if(m_game->getTurn() == true)
     {
-        m_game.setTurn(false);
+        m_game->setTurn(false); 
     }
-    else if(m_game.getTurn() == false)
+    else if(m_game->getTurn() == false)
     {
-        m_game.setTurn(true);
+        m_game->setTurn(true);
     }
 }
 void Controller::playInBoard()
 {
-    m_inOut.inputPlayerMove();
+    playerInputMove();
     changePlayer();
     checkWinGame();
 }
 void Controller::newGame()
 {
-    m_board.resetBoard();
-    m_game.setTurn(true);
-    m_game.setExit(false);
-    m_game.setWonGame(false);
-    m_game.setPlayerWon(0);
+    resetBoard();
+    m_game->setTurn(true);
+    m_game->setExit(false);
+    m_game->setWonGame(false);
+    m_game->setPlayerWon(0);
+}
+//Flow of game
+void Controller::mainMenu()
+{
+    char choice;
+    do
+    {
+        system("cls");
+        m_view->menuHeader(t_mainmenu);
+        m_view->mainMenu();
+        choice = inputOption();
+        switch (choice)
+        {
+        case '1':
+            playWithOtherPlayer();
+            break;
+        case '2':
+            break;
+        case '3':
+            playerInformationMenu();
+            break;
+        case '4':
+            guide();
+            break;
+        case '5':
+            exitGame();
+            break;
+        default:
+            break;
+        }
+    }while(choice < '1' || choice > '5');
+}
+void Controller::playWithOtherPlayer()
+{
+    system("cls");
+    playerInputAccount();
+    do
+    {
+        if(m_game->isWonGame() == false)
+        {
+            system("cls");
+            m_view->drawGameScreen(m_game);
+            if(checkFullBoard())
+            {
+                showInput("DRAW!\n", YELLOW);
+                gameOverMenu();
+            }
+            else
+            {
+                playInBoard();    
+            }
+        }
+        if(m_game->isWonGame() == true)
+        {
+            updateWinLoseRecord();
+            system("cls");
+            m_view->drawGameScreen(m_game);
+            showInput("Player: ");
+            if(m_game->getPlayerWon() == VX)
+            {
+                showInput(m_game->getPlayer1().getName(), P1);
+            }
+            else if(m_game->getPlayerWon() == VO)
+            {
+                showInput(m_game->getPlayer2().getName(), P2);
+            }
+            showInput(" won!\n", YELLOW);
+            gameOverMenu();
+        }
+    } while (m_game->isWonGame() == false);
+}
+void Controller::gameOverMenu()
+{
+    char choice;
+    m_view->gameOverMenu();
+    do
+    {
+        choice = inputOption();
+        switch (choice)
+        {
+        case '1':
+            newGame();
+            break;
+        case '2':
+            newGame();
+            mainMenu();
+            break;
+        default:
+            showInput("Press again!\n");
+            break;
+        }
+    } while(choice < '1' || choice > '2');
+}
+void Controller::playerInformationMenu()
+{
+
+}
+void Controller::showAllPlayer()
+{
+
+}
+void Controller::searchPlayerByName()
+{
+
+}
+void Controller::guide()
+{
+    char choice;
+    do
+    {
+        system("cls");
+        m_view->menuHeader(t_guide);
+        m_view->guide();
+        choice = inputOption();
+        switch (choice)
+        {
+        case '1':
+            mainMenu();
+            break;
+        default:
+            break;
+        }
+    } while (choice != '1');
+}
+void Controller::startGame()
+{
+    newGame();
+    while (isContinue())
+    {
+        mainMenu();
+    }  
 }

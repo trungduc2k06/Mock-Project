@@ -17,8 +17,6 @@ class Board
         int getSize();
         int getXAt(int, int);
         int getYAt(int, int);
-        void resetBoard();
-        void drawBoard();
         void setXO(int, int ,int);
         int getXO(int, int);
 };

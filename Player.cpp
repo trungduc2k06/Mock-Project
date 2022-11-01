@@ -13,6 +13,7 @@ Player::~Player()
 }
 void Player::initPlayer()
 {
+    m_name = inputStringName(10);
     m_win = 0;
     m_lose = 0;
     m_draw = 0;

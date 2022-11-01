@@ -2,24 +2,15 @@
 #define _VIEW_H_
 
 #include "Library.h"
-#include "Player.h"
-#include "InOut.h"
 #include "Board.h"
 #include "Game.h"
-#include "Controller.h"
 
 class View
 {
-    private:
-		InOut m_inOut;
-		Board m_board;
-		Game m_game;
-		Controller m_control;
-		bool m_isContinue = 1;
     public:
-		Player m_user1 = m_game.getPlayer1();
-		Player m_user2 = m_game.getPlayer2();
-		void drawGameScreen();
+		void drawBoard(Board*);
+		void drawGameScreen(Game*);
+		void menuHeader(char);
         void mainMenu();
 		void gameOverMenu();
 		void playerInformationMenu();
@@ -29,6 +20,5 @@ class View
 		void userInformation();
 		void startGame();
 };
-
 
 #endif

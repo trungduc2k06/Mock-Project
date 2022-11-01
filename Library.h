@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "windows.h"
+#include "conio.h"
 
 using namespace std;
 //Common
@@ -31,9 +32,12 @@ using namespace std;
 //View
 enum choiceType
 {
-    t_play = '1',
+    t_mainmenu = '0',
+    t_playWithOther,
     t_replay,
-    t_info,
+    t_infoPlayer,
+    t_showAllPlayer,
+    t_searchPlayer,
     t_guide,
     t_exit,
 };
@@ -41,4 +45,6 @@ enum choiceType
 void setColor(int color);
 void showInput(string s);
 void showInput(string s, int color);
+char* inputStringName(const int k);
+
 #endif

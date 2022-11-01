@@ -1,10 +1,11 @@
-#include "Board.h"
-#include "View.h"
+#include "Library.h"
+#include "Controller.h"
 
 int main()
 {
     Game* game = new Game(BOARD_SIZE);
-    View view;
-    view.startGame();
+    View* view = new View;
+    Controller* controller = new Controller(game, view);
+    controller->startGame();
     return 0;
 }

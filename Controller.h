@@ -2,32 +2,49 @@
 #define _CONTROLLER_H_
 
 #include "Library.h"
-#include "Board.h"
 #include "Game.h"
-#include "InOut.h"
+#include "View.h"
+#include "Validation.h"
 
 class Controller
 {
     private:
-        Board m_board;
-        Game m_game;
-        InOut m_inOut;
-        char m_option;
+        Game* m_game;
+        View* m_view;
     public:
-        void inputOption();
-        void setOption(char);
-        char getOption();
+        Controller(Game*, View*);
+        ~Controller();
+        char inputOption();
+        //Controller
+        void initGame(int);
+        bool isContinue();
+        void exitGame();
+
+        void resetBoard();
         bool checkFullBoard();
         bool horiWin(int, int);
         bool vertiWin(int, int);
         bool lCrossWin(int, int);
         bool rCrossWin(int, int);
+
         void checkWinGame();
         void updateWinLoseRecord();
         void updateDrawRecord();
+        void playerInputAccount();
+        void playerChooseAccount();
+        void playerInputMove();
         void changePlayer();
 		void playInBoard();
         void newGame();
+        //Flow of game
+        void mainMenu();
+        void playWithOtherPlayer();
+        void gameOverMenu();
+        void playerInformationMenu();
+		void showAllPlayer();
+		void searchPlayerByName();
+		void guide();
+        void startGame();
 };
 
 #endif
