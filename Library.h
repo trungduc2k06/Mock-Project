@@ -35,7 +35,7 @@ struct Move
     int col, row, value;
 };
 //View
-enum choiceType
+enum choiceMenuHeader
 {
     t_mainmenu = '0',
     t_playWithOther,
@@ -45,6 +45,16 @@ enum choiceType
     t_searchPlayer,
     t_guide,
     t_exit,
+};
+//Controller
+enum choiceType
+{
+    choice1 = '1',
+    choice2,
+    choice3,
+    choice4,
+    choice5,
+    choice6,
 };
 //
 void setColor(int color);

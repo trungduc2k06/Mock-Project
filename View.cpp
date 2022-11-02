@@ -170,8 +170,5 @@ void View::guide()
     showInput("*Neu ma tat ca cac o bi danh dau het ma chua co nguoi thang thi 2 nguoi choi se hoa nhau\n");
     showInput("*Tro choi se chi dung lai khi mot trong hai nguoi choi thang hoac ca hai hoa nhau\n");
     showInput("*Thank you! Chuc ban choi vui ve\n");
-}
-void View::userInformation()
-{
-
+    showInput("Press number to choice:");
 }

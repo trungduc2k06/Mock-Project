@@ -264,7 +264,7 @@ void Controller::replayLastGame()
         replayGame->setPlayer2(m_game->getPlayer2());
         replayGame->getBoard()->setXO((*iter).col, (*iter).row, (*iter).value);
         m_view->drawGameScreen(replayGame);
-        Sleep(500);
+        Sleep(1000);
         iter++;
     }
     
@@ -274,28 +274,18 @@ void Controller::replayGameById(char id)
     list<Move> replayMoves = getReplayMoveById(id);
     string user1 = getReplayPlayerById(id, 1);
     string user2 = getReplayPlayerById(id, 2);
-    //list<Move>::iterator iter = replayMoves.begin();
+    list<Move>::iterator iter = replayMoves.begin();
     Game* replayGame = new Game(m_game->getBoard()->getSize());
-    // while(iter != replayMoves.end())
-    // {
-    //     system("cls");
-    //     replayGame->getPlayer1().setName(user1);
-    //     replayGame->getPlayer2().setName(user2);
-    //     replayGame->getBoard()->setXO((*iter).col, (*iter).row, (*iter).value);
-    //     //m_view->drawGameScreen(replayGame);
-    //     //Sleep(500);
-    //     cout <<"Bug1: " << (*iter).col << " " << (*iter).row << " " << (*iter).value << endl;
-    //     ++iter;
-    // }
-    for(list<Move>::iterator iter = replayMoves.begin(); iter != replayMoves.end(); iter++)
+    replayGame->getPlayer1().setName(user1);
+    replayGame->getPlayer2().setName(user2);
+    while(iter != replayMoves.end())
     {
         system("cls");
-        replayGame->getPlayer1().setName(user1);
-        replayGame->getPlayer2().setName(user2);
         replayGame->getBoard()->setXO((*iter).col, (*iter).row, (*iter).value);
-        //m_view->drawGameScreen(replayGame);
-        //Sleep(500);
-        cout <<"Bug1: " << (*iter).col << " " << (*iter).row << " " << (*iter).value << endl;
+        //cout <<"Bug1: " << (*iter).col << " " << (*iter).row << " " << (*iter).value << endl; //Test bug 1/11/2022
+        m_view->drawGameScreen(replayGame);
+        Sleep(1000);
+        iter++;
     }
 }
 void Controller::playerInputAccount()
@@ -354,7 +344,7 @@ void Controller::playerInputMove()
             cin >> chCol;
             inputRow = (int)chRow - 48;
             inputCol = (int)chCol - 48;
-        } while ((inputCol < 0) || (inputCol > m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow > m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
+        } while ((inputCol < 0) || (inputCol >= m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow >= m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
         m_game->getBoard()->setXO(inputCol, inputRow, VX);
         m_game->saveMove(inputCol, inputRow, VX);
     }
@@ -369,7 +359,7 @@ void Controller::playerInputMove()
             cin >> chCol;
             inputRow = (int)chRow - 48;
             inputCol = (int)chCol - 48;
-        } while ((inputCol < 0) || (inputCol > m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow > m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
+        } while ((inputCol < 0) || (inputCol >= m_game->getBoard()->getSize() - 1) || (inputRow < 0) || (inputRow >= m_game->getBoard()->getSize() - 1) || (m_game->getBoard()->getXO(inputCol, inputRow) != 0));
         m_game->getBoard()->setXO(inputCol, inputRow, VO);
         m_game->saveMove(inputCol, inputRow, VO);
     }
@@ -411,25 +401,25 @@ void Controller::mainMenu()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             playWithOtherPlayer();
             break;
-        case '2':
+        case choice2:
             replay();
             break;
-        case '3':
+        case choice3:
             playerInformationMenu();
             break;
-        case '4':
+        case choice4:
             guide();
             break;
-        case '5':
+        case choice5:
             exitGame();
             break;
         default:
             break;
         }
-    }while(choice < '1' || choice > '5');
+    }while(choice < choice1 || choice > choice5);
 }
 void Controller::playWithOtherPlayer()
 {
@@ -483,11 +473,11 @@ void Controller::gameOverMenu()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             newGame();
             m_game->resetReplayMoves();
             break;
-        case '2':
+        case choice2:
             newGame();
             mainMenu();
             break;
@@ -495,7 +485,7 @@ void Controller::gameOverMenu()
             showInput("Press again!\n");
             break;
         }
-    } while(choice < '1' || choice > '2');
+    } while(choice < choice1 || choice > choice2);
 }
 void Controller::askToSaveReplay()
 {
@@ -506,17 +496,18 @@ void Controller::askToSaveReplay()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             saveReplayInFile(m_game);
+            Sleep(1000);
             showInput("Saved successfully!\n", YELLOW);
             break;
-        case '2':
+        case choice2:
             break;
         default:
             showInput("Press again!\n");
             break;
         }
-    }while(choice < '1' || choice > '2');
+    }while(choice < choice1 || choice > choice2);
 }
 void Controller::replay()
 {
@@ -537,19 +528,19 @@ void Controller::replay()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             break;
-        case '2':
+        case choice2:
             replay();
             break;
-        case '3':
+        case choice3:
             mainMenu();
             break;
         default:
             showInput("Press again!\n");
             break;
         }
-    } while (choice < '2' || choice > '3');
+    } while (choice < choice2 || choice > choice3);
     
 }
 void Controller::playerInformationMenu()
@@ -563,19 +554,19 @@ void Controller::playerInformationMenu()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             showAllPlayer();
             break;
-        case '2':
+        case choice2:
             searchPlayerByName();
             break;
-        case '3':
+        case choice3:
             mainMenu();
             break;
         default:
             break;
         }
-    } while (choice < '1' || choice < '3');
+    } while (choice < choice1 || choice < choice3);
     
 }
 void Controller::showAllPlayer()
@@ -590,16 +581,16 @@ void Controller::showAllPlayer()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             playerInformationMenu();
             break;
-        case '2':
+        case choice2:
             mainMenu();
             break;
         default:
             break;
         }
-    } while (choice < '1' || choice > '2');
+    } while (choice < choice1 || choice > choice2);
     
 }
 void Controller::searchPlayerByName()
@@ -619,19 +610,19 @@ void Controller::searchPlayerByName()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             searchPlayerByName();
             break;
-        case '2':
+        case choice2:
             playerInformationMenu();
             break;
-        case '3':
+        case choice3:
             mainMenu();
             break;
         default:
             break;
         }
-    } while (choice < '1' || choice > '3');
+    } while (choice < choice1 || choice > choice3);
     
 }
 void Controller::guide()
@@ -645,13 +636,13 @@ void Controller::guide()
         choice = inputOption();
         switch (choice)
         {
-        case '1':
+        case choice1:
             mainMenu();
             break;
         default:
             break;
         }
-    } while (choice != '1');
+    } while (choice != choice1);
 }
 void Controller::startGame()
 {

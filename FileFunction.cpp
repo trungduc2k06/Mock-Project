@@ -3,6 +3,8 @@
 #include <sstream>
 #include <ctime>
 #include <iomanip>
+#include <cstdlib>
+#include <vector>
 
 bool isFileExist(const char* fileName)
 {
@@ -285,7 +287,7 @@ list<Move> getReplayMoveById(char id)
                     move.value = value;
                     replayMoves.push_back(move);
                 }
-            } while (idGame == '-' && fin.eof());
+            } while (idGame == '-' && !fin.eof());
             return replayMoves;
         } 
     }

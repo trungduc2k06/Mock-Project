@@ -19,8 +19,6 @@ class View
 		void showAllPlayer();
 		void searchPlayerByName();
 		void guide();
-		void userInformation();
-		void startGame();
 };
 
 #endif
